@@ -50,7 +50,7 @@ class GameLayout:
         elif choice=='a':
             score, new_layout = self.swipe_left(scores, new_layout)
         else:
-            raise Exception("error message b: invalid input")
+            raise Exception("Invalid input to swipe.")
 
         if (new_layout!=self.layout).sum()>0: # some tiles were moved so the move is valid
             
@@ -68,8 +68,12 @@ class GameLayout:
         else:
             self.failed_moves.add(choice)
             self.active = len(self.failed_moves)<4 # otherwise, all moves have been tried and game should end
-            assert self.active
-            raise Exception('error message c: not a valid move')
+            
+			# assertion error means game ends
+			assert self.active 
+			
+			# exception means move didn't change the layout, and another input is required
+            raise Exception('Not a valid move.') 
 
     def swipe_up(self, scores, new_layout):
         for i in range(4):
