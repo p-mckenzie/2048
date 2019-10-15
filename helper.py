@@ -45,7 +45,7 @@ class GameDriver():
 		from game import GameLayout
 		for i in range(n):
 			game = GameLayout()
-			moves = ['w','s','a','d']
+			moves = ['w','a','s','d']
 			while game.active:
 				# repeatedly attempt to make a move
 				for move in self.weighted_shuffle(moves, method(game.layout)):

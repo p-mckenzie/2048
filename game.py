@@ -99,7 +99,7 @@ class GameLayout:
 	
 	def log_data(self, move):
 		formatted_move = np.zeros(4)
-		formatted_move[['w','s','a','d'].index(move)] = 1
+		formatted_move[['w','a','s','d'].index(move)] = 1
 
 		try:
 			self.layouts = np.concatenate((self.layouts, self.layout.reshape(1,-1)))
