@@ -62,6 +62,10 @@ class GameLayout:
 			self.log_data(choice) # log data w/ old layout
 			self.layout = new_layout # update to new layout
 
+            		if self.layout.max()==2048:
+                		# won the game!
+                		self.active = False
+				
 			# include the random next tile
 			self.add_random()
 		else:
