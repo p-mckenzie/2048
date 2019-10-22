@@ -38,8 +38,9 @@ def print_pretty(layout):
 					   '\n'.join([cell_block(val) for val in layout[3,:]]))
 				   
 class GameDriver():    
-	def __init__(self):
+	def __init__(self, as_frac=False):
 		import numpy as np
+		self.as_frac = as_frac
 		
 	def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25])):
 		from game import GameLayout
@@ -78,10 +79,18 @@ class GameDriver():
 			self.moves.append(game.moves)
 			self.scores.append(game.scores)
 			self.tile_sums.append(game.layouts[-1].sum())
+			
+			# option for logging as fraction
+			self.layouts.append(np.log2(np.where(game.layouts==0, 1, game.layouts))/11 if self.as_frac else game.layouts)
 		except AttributeError:
 			self.final_scores = np.array(game.score)
 			self.num_moves = np.array(game.num_moves)
-			self.layouts = [game.layouts]
 			self.moves = [game.moves]
 			self.scores = [game.scores]
 			self.tile_sums = [game.layouts[-1].sum()]
+			
+			# option for logging as fraction
+			if self.as_frac:
+			    self.layouts = [np.log2(np.where(game.layouts==0, 1, game.layouts))/11]
+			else:
+			    self.layouts = [game.layouts]
