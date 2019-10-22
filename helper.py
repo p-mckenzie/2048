@@ -77,9 +77,11 @@ class GameDriver():
 			self.layouts.append(game.layouts)
 			self.moves.append(game.moves)
 			self.scores.append(game.scores)
+			self.tile_sums.append(game.layouts[-1].sum())
 		except AttributeError:
 			self.final_scores = np.array(game.score)
 			self.num_moves = np.array(game.num_moves)
 			self.layouts = [game.layouts]
 			self.moves = [game.moves]
 			self.scores = [game.scores]
+			self.tile_sums = [game.layouts[-1].sum()]
