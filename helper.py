@@ -44,7 +44,7 @@ class GameDriver():
     def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25]), init_layout=None, early_stop=2048):
         from game import GameLayout
         for i in range(n):
-            game = GameLayout()
+            game = GameLayout(early_stop=early_stop)
             if type(init_layout) == np.ndarray:
                 game.layout = init_layout
             moves = ['w','a','s','d']
@@ -56,9 +56,6 @@ class GameDriver():
                     except:
                         # move didn't work, try next move
                         continue
-                    if game.layout.max()>=early_stop:
-                        game.active = False
-                        break
             # game is over
             self.log_game(game)
 
@@ -85,6 +82,7 @@ class GameDriver():
             self.scores.append(game.scores)
             self.tile_sums = np.append(self.tile_sums, game.final_layout.sum())
             self.max_tile = np.append(self.max_tile, game.final_layout.max())
+            self.wins = np.append(self.wins, game.won)
 
         except AttributeError:
             self.final_scores = np.array(game.score)
@@ -95,3 +93,4 @@ class GameDriver():
             self.scores = [game.scores]
             self.tile_sums = np.array(game.final_layout.sum())
             self.max_tile = np.array(game.final_layout.max())
+            self.wins = np.array(game.won)

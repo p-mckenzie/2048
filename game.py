@@ -1,10 +1,12 @@
 import numpy as np
 
 class GameLayout:
-    def __init__(self):
+    def __init__(self, early_stop=2048):
         # initialize empty layout and zero points
         self.layout = np.zeros((4,4), dtype=np.int)
         self.score = 0
+        self.won = False
+        self.early_stop = early_stop
 
         # each game starts with 2 full tiles
         self.add_random()
@@ -59,23 +61,31 @@ class GameLayout:
             self.score += scores.sum()
             self.num_moves += 1
 
-            self.log_data(choice) # log data w/ old layout
-            self.layout = new_layout # update to new layout
+            if self.layout.max()>=self.early_stop:
+                self.end_game()
+                self.won = True
+            else:
+                self.log_data(choice) # log data w/ old layout
+                self.layout = new_layout # update to new layout
 
-            # include the random next tile
-            self.add_random()
+                # include the random next tile
+                self.add_random()
+            
+            
         else:
             self.failed_moves.add(choice)
-            self.active = len(self.failed_moves)<4 # otherwise, all moves have been tried and game should end
-
-            if not self.active:
-                self.final_layout = self.layout
-                # assertion error means game ends
-                assert self.active 
-
+            if len(self.failed_moves)==4: # all moves have been tried and game should end
+                self.end_game()
+            
             # exception means move didn't change the layout, and another input is required
             raise Exception('Not a valid move.') 
-
+    
+        assert self.active
+    
+    def end_game(self):
+        self.active = False
+        self.final_layout = self.layout
+        
     def swipe_up(self, scores, new_layout):
         for i in range(4):
             new_layout[i], scores[i] = self.condense(np.concatenate((self.layout[self.layout[:,i]>0,i], self.layout[self.layout[:,i]==0,i])))
