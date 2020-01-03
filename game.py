@@ -71,19 +71,21 @@ class GameLayout:
 			# exception means move didn't change the layout, and another input is required
 			raise Exception('Not a valid move.') 
 
-            # update the game's score and layout
+            # update the game's score
             self.score += scores.sum()
-            self.num_moves += 1
-
+            
             if self.layout.max()>=self.early_stop:
                 self.end_game()
                 self.won = True
+                return
             else:
                 self.log_data(choice) # log data w/ old layout
                 self.layout = new_layout # update to new layout
 
                 # include the random next tile
                 self.add_random()
+                
+            self.num_moves += 1
             
             
         else:

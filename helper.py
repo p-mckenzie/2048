@@ -53,6 +53,7 @@ class GameDriver():
                 for move in self.weighted_shuffle(moves, method(game.layout)):
                     try:
                         game.swipe(move)
+                        break
                     except:
                         # move didn't work, try next move
                         continue
