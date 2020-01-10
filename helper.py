@@ -41,16 +41,18 @@ class GameDriver():
     def __init__(self):
         import numpy as np
 
-    def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25]), init_layout=None, early_stop=2048):
+    def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25]), init_layout=None, early_stop=2048, randomized_move=True):
         from game import GameLayout
         for i in range(n):
             game = GameLayout(early_stop=early_stop)
             if type(init_layout) == np.ndarray:
                 game.layout = init_layout
-            moves = ['w','a','s','d']
+            moves = np.array(['w','a','s','d'])
             while game.active:
                 # repeatedly attempt to make a move
-                for move in self.weighted_shuffle(moves, method(game.layout)):
+                probability_distribution = method(game.layout)
+                move_order = self.weighted_shuffle(moves, probability_distribution) if randomized_move else np.flip(moves[np.argsort(probability_distribution)], axis=0)
+                for move in move_order:
                     try:
                         game.swipe(move)
                         break
