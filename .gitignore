@@ -4,3 +4,4 @@
 *.db
 *.pyc
 __pycache__/*
+model_results/*
