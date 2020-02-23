@@ -12,7 +12,7 @@ To load a jupyter notebook and play my version:
 
 ### Part 2 - Reinforcement Learning
 This is still in progress!
-A 2nd blog post will follow, once analysis is completed.
+See my 2nd [blog post](https://p-mckenzie.github.io/2019/12/30/2048-part-2/), which covers my logical approach to reinforcement learning and details the parameters necessary for using the `NeuralNetwork` class in `network.py`.
 
 Details
 ----------------
