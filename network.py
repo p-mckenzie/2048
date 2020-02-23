@@ -70,7 +70,10 @@ class NeuralNetwork():
 			final_penalties = np.ones(data.final_scores.shape)
 			for unique_val in np.unique(data.wins):
 				sub_rank = rank_values[data.wins==unique_val]
-				penalties = np.nan_to_num((sub_rank-sub_rank.min())/(sub_rank.max()-sub_rank.min())/2)+.5
+				if len(np.unique(sub_rank, return_counts=True)[1])>1:
+					penalties = (sub_rank-sub_rank.min())/(sub_rank.max()-sub_rank.min())/2+.5
+				else:
+					penalties = np.repeat(.5, sub_rank.shape)
 				if not unique_val:
 					penalties *= -1
 				final_penalties[data.wins==unique_val] = penalties
