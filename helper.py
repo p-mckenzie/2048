@@ -41,12 +41,11 @@ class GameDriver():
     def __init__(self):
         import numpy as np
 
-    def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25]), init_layout=None, early_stop=2048, randomized_move=True):
+    def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25]), 
+                          randomized_move=True):
         from game import GameLayout
         for i in range(n):
-            game = GameLayout(early_stop=early_stop)
-            if type(init_layout) == np.ndarray:
-                game.layout = init_layout
+            game = GameLayout()
             moves = np.array(['w','a','s','d'])
             while game.active:
                 # repeatedly attempt to make a move
