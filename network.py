@@ -90,7 +90,7 @@ class NeuralNetwork():
         # initialize variables to hold data during training
         end_time = time.time()+60*60*duration
         
-        self.evaluation = []
+        self.model.evaluation = []
         '''
         if not test:
             # get baseline performance before training at all
@@ -124,7 +124,7 @@ class NeuralNetwork():
                     game_rank_values = game_rank_values[batch_size:]
                     game_sizes = game_sizes[batch_size:]
                     
-                    self.evaluation.append(game_rank_values.mean())
+                    self.model.evaluation.append(game_rank_values.mean())
                     
                 
             except NameError:
@@ -175,7 +175,7 @@ class NeuralNetwork():
             return
 
         # run large set of full games to gauge any performance improvement
-        self.baseline(num_games)
+        #self.baseline(num_games)
 
         # call log_results to save the trained model
         self.log_results()
