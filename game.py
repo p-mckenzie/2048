@@ -1,12 +1,11 @@
 import numpy as np
 
 class GameLayout:
-    def __init__(self, early_stop=2048):
+    def __init__(self):
         # initialize empty layout and zero points
         self.layout = np.zeros((4,4), dtype=np.int)
         self.score = 0
         self.won = False
-        self.early_stop = early_stop
 
         # each game starts with 2 full tiles
         self.add_random()
@@ -18,6 +17,14 @@ class GameLayout:
 
         # needed for correct data logging
         self.num_moves = 0
+        
+    def reset(self):
+        # updates parameters except the layout, essentially "starting over" at the current layout
+        try:
+            del self.layouts, self.moves, self.scores
+        except AttributeError:
+            # variables haven't been initialized yet
+            pass
 
     def add_random(self):
         # randomly choose any empty tile and fills it with a 2 or 4 tile (with 90%, 10% probabilities, respectively)
@@ -74,19 +81,13 @@ class GameLayout:
             # update the game's score
             self.score += scores.sum()
             
-            if self.layout.max()>=self.early_stop:
-                self.end_game()
-                self.won = True
-                return
-            else:
-                self.log_data(choice) # log data w/ old layout
-                self.layout = new_layout # update to new layout
+            self.log_data(choice) # log data w/ old layout
+            self.layout = new_layout # update to new layout
 
-                # include the random next tile
-                self.add_random()
+            # include the random next tile
+            self.add_random()
                 
             self.num_moves += 1
-            
             
         else:
             self.failed_moves.add(choice)

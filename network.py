@@ -55,7 +55,7 @@ class NeuralNetwork():
         return weights
 
     def get_data(self, batch_size=10, random_frac=None, 
-                 random_games=0, randomized_move=True):
+                 random_games=0, randomized_move=True, cutoff=None):
 
         # define method for training (possibly including random moves with neural network-selected moves)
         if random_frac is not None:
@@ -69,7 +69,7 @@ class NeuralNetwork():
 
         # run entire games
         # run neural-network-run games with initialization
-        data.run_games(batch_size, method=method, randomized_move=randomized_move)
+        data.run_games(batch_size, method=method, randomized_move=randomized_move, cutoff=cutoff)
         if random_games>0: # run same number of completely random games, if applicable
             data.run_games(random_games) 
         
@@ -77,7 +77,7 @@ class NeuralNetwork():
 
     def train(self, lr=0.001, duration=1/600, random_games=False, random_frac=None, batch_size=10,
              move_penalty_type=None, game_penalty_type=None,
-             test=False, num_games=2000, forget_after=30):
+             test=False, num_games=2000, forget_after=30, cutoff=None):
 
         # save all parameters passed to train() in the model object for later serialization
         self.model.user_parameters = locals().copy()
@@ -99,7 +99,8 @@ class NeuralNetwork():
         while time.time()<end_time: # run loop for a certain duration (in hours)
 
             # ------------------ get appropriate game data ------------------------
-            data = self.get_data(batch_size=batch_size, random_frac=random_frac, random_games=random_games)
+            data = self.get_data(batch_size=batch_size, random_frac=random_frac, random_games=random_games,
+                                cutoff=cutoff)
 
             # -----------------update dataset with new games-----------------------
             try:
@@ -176,12 +177,15 @@ class NeuralNetwork():
 
         # run large set of full games to gauge any performance improvement
         #self.baseline(num_games)
+        if len(self.model.evaluation)>200:
+            print("Final average scores:", round(np.mean(self.model.evaluation[-200:]), 2))
 
         # call log_results to save the trained model
         self.log_results()
 
     def baseline(self, num_games, save=False):
         data = self.get_data(batch_size=num_games, randomized_move=False)
+        #print(data.final_scores.mean())
         results = np.asarray(np.unique(data.max_tile, return_counts=True)).T
         print(results)
         if save:
