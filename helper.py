@@ -42,7 +42,7 @@ class GameDriver():
         import numpy as np
 
     def run_games(self, n, method=lambda layout:np.array([.25,.25,.25,.25]), 
-                          randomized_move=True):
+                          randomized_move=True, cutoff=None):
         from game import GameLayout
         for i in range(n):
             game = GameLayout()
@@ -58,6 +58,11 @@ class GameDriver():
                     except:
                         # move didn't work, try next move
                         continue
+                # check if move is too many
+                if cutoff:
+                    if game.num_moves>=cutoff:
+                        game.end_game()
+                        break # leave while loop
             # game is over
             self.log_game(game)
 
