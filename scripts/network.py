@@ -126,6 +126,10 @@ class NeuralNetwork():
                     game_sizes = game_sizes[batch_size:]
                     
                     self.model.evaluation.append(game_rank_values.mean())
+                    '''
+                    if self.model.evaluation[-1] > 87:
+                        return
+                    '''
                     
                 
             except NameError:
