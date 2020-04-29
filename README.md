@@ -35,4 +35,5 @@ Software:
 This project is built in python, relying primarily on pytorch, numpy, and matplotlib.
 
 Author: [Paige McKenzie](https://p-mckenzie.github.io/)
+
 Date completed: 4/29/2020
