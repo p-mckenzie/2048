@@ -62,21 +62,7 @@ class GameLayout:
 
         if (new_layout!=self.layout).sum()>0: # some tiles were moved so the move is valid
 
-            		if self.layout.max()==2048:
-                		# won the game!
-                		self.active = False
-				
-			# include the random next tile
-			self.add_random()
-		else:
-			self.failed_moves.add(choice)
-			self.active = len(self.failed_moves)<4 # otherwise, all moves have been tried and game should end
-			
-			# assertion error means game ends
-			assert self.active 
-			
-			# exception means move didn't change the layout, and another input is required
-			raise Exception('Not a valid move.') 
+            self.failed_moves = set() # reset failed move counter
 
             # update the game's score
             self.score += scores.sum()
